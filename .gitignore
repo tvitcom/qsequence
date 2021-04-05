@@ -1,4 +1,5 @@
 /info/*
+.data/*
 /.env*
 /123.go
 /456.go
