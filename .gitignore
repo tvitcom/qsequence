@@ -1,0 +1,12 @@
+/info/*
+/.env*
+/123.go
+/456.go
+*~
+*/*~
+*.swp
+*/*.swp
+/vendor
+# project files
+/*.sublime-project
+/*.sublime-workspace
