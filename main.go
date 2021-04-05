@@ -1,23 +1,12 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
+	"github.com/recoilme/pudge"
 	"log"
 	"math/big"
-	"crypto/rand"
-	"github.com/recoilme/pudge"
 )
-
-const (
-	QUERY_CHAIN_LENGTH = 20 // 20 вопросов может быть максимально задано
-)
-
-// type (
-// 	QueryElement struct {
-// 		QueryChain string
-// 		Tries      uint64
-// 	}
-// )
 
 func main() {
 	queueNumbers := []uint64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 14, 15, 16, 17, 18, 19, 20}
@@ -27,21 +16,12 @@ func main() {
 	cfg := &pudge.Config{
 		SyncInterval: 1,
 		// StoreMode: 2,
-	}//disable every second fsync
+	} //disable every second fsync
 	db, err := pudge.Open(dbFile, cfg)
 	if err != nil {
-	    log.Panic(err)
+		log.Panic(err)
 	}
 	defer db.DeleteFile()
-
-	// Wait for interrupt signal to gracefully shutdown the server 
-	// quit := make(chan os.Signal)
-	// signal.Notify(quit, os.Interrupt, os.Kill)
-	// <-quit
-	// log.Println("Shutdown Server ...")
-	// if err := pudge.CloseAll(); err != nil {
-	// 	log.Println("Pudge Shutdown err:", err)
-	// }
 
 	if ok, _ := db.Has(stringQueue); !ok {
 		pudge.Set(dbFile, stringQueue, qQueueQuestionNumbers)
