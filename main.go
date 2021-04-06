@@ -8,9 +8,11 @@ import (
 	"math/big"
 )
 
+const repeatNumber uint64 = 20
+
 func main() {
 	queueNumbers := []uint64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 14, 15, 16, 17, 18, 19, 20}
-	qQueueQuestionNumbers, stringQueue := getQueueQuestionNumbers(queueNumbers, false)
+	qQueueQuestionNumbers, stringQueue := getQueueQuestionNumbers(queueNumbers)
 
 	dbFile := "../data/pudgedb"
 	cfg := &pudge.Config{
@@ -25,15 +27,14 @@ func main() {
 
 	if ok, _ := db.Has(stringQueue); !ok {
 		pudge.Set(dbFile, stringQueue, qQueueQuestionNumbers)
+		fmt.Println(stringQueue)
+		fmt.Println(qQueueQuestionNumbers)
 	} else {
-		log.Println("Sequence last occured before. Try again.")
+		fmt.Println("Sequence last occured before. Try again.")
 	}
-
-	log.Println(stringQueue)
-	log.Println(qQueueQuestionNumbers)
 }
 
-func getQueueQuestionNumbers(xs []uint64, debug bool) ([]uint64, string) {
+func getQueueQuestionNumbers(xs []uint64) ([]uint64, string) {
 	queueString := ""
 	var qQueueNumbers []uint64
 	shuffleElement := func() uint64 {
@@ -54,15 +55,8 @@ func getQueueQuestionNumbers(xs []uint64, debug bool) ([]uint64, string) {
 	lenXs := len(xs)
 	next := uint64(0)
 
-	if debug {
-		log.Println("lenXs:", lenXs)
-	}
-
 	for i := 0; i < lenXs; i++ {
 		next = shuffleElement()
-		if debug {
-			log.Println(next, queueString)
-		}
 		qQueueNumbers = append(qQueueNumbers, next)
 	}
 
