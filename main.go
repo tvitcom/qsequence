@@ -11,20 +11,20 @@ import (
 const repeatNumber uint64 = 20
 
 func main() {
-	startQueueNumbers := []uint64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+	startQueueNumbers := []uint64{1, 2, 3, 4} //, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
 	dbFile := "../data/pudgedb"
 	cfg := &pudge.Config{
-		SyncInterval: 1,
-		StoreMode:    2,
-	} //disable every second fsync
+		SyncInterval: 1, //disable every second fsync
+		StoreMode:    2, // set only memory-based storage
+	}
 	db, err := pudge.Open(dbFile, cfg)
 	if err != nil {
 		log.Panic(err)
 	}
 	defer db.DeleteFile()
 
-	for i := 0; i < 1000000; i++ {
+	for i := 0; i < 10; i++ {
 		qQueueNumbers, stringQueue := getQueueNumbers(startQueueNumbers)
 
 		if ok, _ := db.Has(stringQueue); !ok {
